@@ -21,10 +21,5 @@
   "theme_color": "#ff0000",
   "background_color": "#ff0000",
   "start_url": "/bggapp",
-  "display": "standalone",
-  "gcm_sender_id": "259310388404",
-  "gcm_user_visible_only": true,
-  "permissions": [
-    "gcm"
-  ]
+  "display": "standalone"
 }
