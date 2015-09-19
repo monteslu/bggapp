@@ -4,7 +4,6 @@ import bggTypes from '../constants/bgg-types';
 export default class GameCard extends Component {
   render() {
     const {game, gameType} = this.props;
-    console.log('props.game', game, gameType);
 
     const style = {
       background: 'url(\"' + game.thumbnail.value + '\") center / cover'

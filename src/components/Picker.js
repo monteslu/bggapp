@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 const styles = {
-  "font-size" : "2em"
+  fontSize : "2em"
 }
 
 export default class Picker extends Component {

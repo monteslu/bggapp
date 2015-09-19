@@ -34706,7 +34706,7 @@
 	var _react2 = _interopRequireDefault(_react);
 
 	var styles = {
-	  "font-size": "2em"
+	  fontSize: "2em"
 	};
 
 	var Picker = (function (_Component) {
@@ -34833,8 +34833,6 @@
 	      var _props = this.props;
 	      var game = _props.game;
 	      var gameType = _props.gameType;
-
-	      console.log('props.game', game, gameType);
 
 	      var style = {
 	        background: 'url(\"' + game.thumbnail.value + '\") center / cover'
