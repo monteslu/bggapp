@@ -15,7 +15,7 @@ class Layout extends Component {
 <div className="mdl-layout mdl-layout--fixed-header">
   <header className="mdl-layout__header">
     <div className="mdl-layout__header-row">
-      <span className="mdl-layout-title"><Link to="/" className="mdl-navigation__link">BGG Stuff</Link></span>
+      <span className="mdl-layout-title"><Link to="/" className="mdl-navigation__link">BGG Picker</Link></span>
       <div className="mdl-layout-spacer"></div>
       <nav className="mdl-navigation">
         <Link to="/hotness" className="mdl-navigation__link">Hotness</Link>
@@ -34,7 +34,6 @@ class Layout extends Component {
     </div>
   </footer>
 </div>
-
     );
   }
 }

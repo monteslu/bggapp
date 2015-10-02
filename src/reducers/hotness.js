@@ -1,6 +1,6 @@
 import {
   REQUEST_GAMES, RECEIVE_GAMES
-} from '../actions';
+} from '../actions/hotness';
 
 
 function hotness(state = {
