@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import bggTypes from '../constants/bgg-types';
 
 export default class GameCard extends Component {
   render() {
@@ -10,7 +9,7 @@ export default class GameCard extends Component {
     };
 
     const yearpublished = (game.yearpublished ? 'published: ' + game.yearpublished.value : '');
-    const gameLink = bggTypes[gameType].url + game.id;
+    const gameLink = gameType.url + game.id;
 
     return (
       <div className="demo-card-wide mdl-card mdl-shadow--8dp">
@@ -21,7 +20,7 @@ export default class GameCard extends Component {
           {yearpublished}
         </div>
         <div className="mdl-card__actions mdl-card--border">
-          <a className="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+          <a className="mdl-button mdl-button--colored">
             {game.name.value}
           </a>
         </div>
@@ -30,11 +29,3 @@ export default class GameCard extends Component {
   }
 }
 
-
-
-      // <div className="demo-card-image mdl-card mdl-shadow--8dp" style={style}>
-      //   <div className="mdl-card__title mdl-card--expand"></div>
-      //   <div className="mdl-card__actions">
-      //     <span className="demo-card-image__filename">{game.name.value}</span>
-      //   </div>
-      // </div>

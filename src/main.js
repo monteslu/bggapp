@@ -4,8 +4,6 @@ import { Provider } from 'react-redux';
 import App from './containers/App';
 import configureStore from './store/configureStore'
 
-let isPushEnabled = false;
-
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.bundle.js')
   .then(function(reg) {

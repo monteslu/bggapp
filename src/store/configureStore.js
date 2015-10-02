@@ -1,7 +1,15 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import loggerMiddleware from 'redux-logger';
-import rootReducer from '../reducers';
+import hotness from '../reducers/hotness';
+import picker from '../reducers/picker';
+import mygames from '../reducers/mygames';
+
+const reducer = combineReducers({
+    hotness,
+    picker,
+    mygames
+});
 
 const createStoreWithMiddleware = applyMiddleware(
   thunkMiddleware,
@@ -9,7 +17,7 @@ const createStoreWithMiddleware = applyMiddleware(
 )(createStore);
 
 export default function configureStore(initialState) {
-  const store = createStoreWithMiddleware(rootReducer, initialState);
+  const storeCreator = createStoreWithMiddleware(reducer, initialState);
 
-  return store;
+  return storeCreator;
 }

@@ -38,15 +38,18 @@ self.addEventListener('install', function(event) {
 self.addEventListener('fetch', function(event) {
 
   var cacheRequest = event.request.clone();
+  var inspectRequest = event.request.clone();
+
+  console.log('inspectRequest', inspectRequest);
 
   event.respondWith(
+
+
 
     fetch(event.request)
       .then(function(response){
 
         var responseToCache = response.clone();
-
-        // console.log('response', response);
 
 
         caches.open(CACHE_NAME)

@@ -66,7 +66,7 @@ html, body {
   height: auto;
 }
 .mdl-demo .mdl-card .mdl-card__supporting-text {
-  margin: 12px;
+  margin: 6px;
   flex-grow: 1;
   padding: 0;
   color: inherit;
@@ -217,6 +217,8 @@ html, body {
   margin: 12px;
   /*background: url('../assets/demos/image_card.jpg') center / cover;*/
 }
+
+
 .demo-card-image > .mdl-card__actions {
   height: 52px;
   padding: 16px;
@@ -229,15 +231,42 @@ html, body {
 }
 
 .demo-card-wide.mdl-card {
-  width: 384px;
-  margin: 12px;
+  width: 340px;
+  margin: 8px;
+  float: left;
 }
+
+.demo-card-wide.mdl-card.collection-card {
+  width: 310px;
+  margin: 8px;
+  float: left;
+}
+
 .demo-card-wide > .mdl-card__title {
   color: #fff;
-  height: 220px;
+  height: 200px;
   /*background: url('../assets/demos/welcome_card.jpg') center / cover;*/
 }
 .demo-card-wide > .mdl-card__menu {
   color: #fff;
 }
 
+
+
+.mdl-demo .mdl-layout__header-row {
+  padding-left: 10px;
+}
+
+
+.pickerControls{
+  -webkit-user-select: none;
+  margin: 6px;
+}
+
+.pickerRow{
+  margin: 12px;
+}
+
+.pickerValue{
+  font-weight: bold;
+}

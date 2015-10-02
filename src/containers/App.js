@@ -1,106 +1,58 @@
 import React, { Component, PropTypes } from 'react';
+import { Router, Route, Link, History, Lifecycle, Redirect } from 'react-router';
+
 import { connect } from 'react-redux';
-import _ from 'lodash';
-import { selectHotness, fetchGamesIfNeeded, invalidateHotness } from '../actions';
-import Picker from '../components/Picker';
-import GameCard from '../components/GameCard';
-import bggTypes from '../constants/bgg-types';
+import Picker from './Picker';
+import Settings from './Settings';
+import Hotness from './Hotness';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleRefreshClick = this.handleRefreshClick.bind(this);
-  }
 
-  componentDidMount() {
-    const { dispatch, selectedHotness } = this.props;
-    dispatch(fetchGamesIfNeeded(selectedHotness));
-  }
+class Layout extends Component {
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.selectedHotness !== this.props.selectedHotness) {
-      const { dispatch, selectedHotness } = nextProps;
-      dispatch(fetchGamesIfNeeded(selectedHotness));
-    }
-  }
-
-  handleChange(nextHotness) {
-    this.props.dispatch(selectHotness(nextHotness));
-  }
-
-  handleRefreshClick(e) {
-    e.preventDefault();
-
-    const { dispatch, selectedHotness } = this.props;
-    dispatch(invalidateHotness(selectedHotness));
-    dispatch(fetchGamesIfNeeded(selectedHotness));
-  }
 
   render() {
-    const { selectedHotness, games, isFetching, lastUpdated } = this.props;
     return (
-      <div>
-        <Picker value={selectedHotness}
-                onChange={this.handleChange}
-                options={_.keys(bggTypes)} />
-        <p>
-          {lastUpdated &&
-            <span>
-              Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
-              {' '}
-            </span>
-          }
-          {!isFetching &&
-            <a href="#"
-               onClick={this.handleRefreshClick}>
-              Refresh
-            </a>
-          }
-        </p>
-        {isFetching && games.length === 0 &&
-          <h2>Loading...</h2>
-        }
-        {!isFetching && games.length === 0 &&
-          <h2>Empty.</h2>
-        }
-        {games.length > 0 &&
-          <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-            {games.map((game, i) =>
-                <GameCard game={game} gameType={selectedHotness}/>
-            )}
-          </div>
-        }
+<div className="mdl-layout mdl-layout--fixed-header">
+  <header className="mdl-layout__header">
+    <div className="mdl-layout__header-row">
+      <span className="mdl-layout-title"><Link to="/" className="mdl-navigation__link">BGG Stuff</Link></span>
+      <div className="mdl-layout-spacer"></div>
+      <nav className="mdl-navigation">
+        <Link to="/hotness" className="mdl-navigation__link">Hotness</Link>
+        <Link to="/settings" className="mdl-navigation__link">Settings</Link>
+      </nav>
+    </div>
+  </header>
+  <main className="mdl-layout__content">
+    <div className="page-content">{this.props.children || <Picker/>}</div>
+  </main>
+  <footer className="mdl-mega-footer">
+    <div className="mdl-mega-footer--bottom-section">
+      <div className="mdl-logo">
+        Made By <a href="https://twitter.com/monteslu" target="_blank">@MONTESLU</a>
       </div>
+    </div>
+  </footer>
+</div>
+
     );
   }
 }
 
-App.propTypes = {
-  selectedHotness: PropTypes.string.isRequired,
-  games: PropTypes.array.isRequired,
-  isFetching: PropTypes.bool.isRequired,
-  lastUpdated: PropTypes.number,
-  dispatch: PropTypes.func.isRequired
-};
+class AppRouter extends Component {
 
-function mapStateToProps(state) {
-  const { selectedHotness, gamesByHotness } = state;
-  const {
-    isFetching,
-    lastUpdated,
-    items: games
-  } = gamesByHotness[selectedHotness] || {
-    isFetching: true,
-    items: []
-  };
-
-  return {
-    selectedHotness,
-    games,
-    isFetching,
-    lastUpdated
-  };
+  render(){
+    return (
+      <Router>
+        <Route path="/" component={Layout}>
+          <Route path="hotness" component={Hotness} />
+          <Route path="settings" component={Settings} />
+        </Route>
+      </Router>
+    )
+  }
 }
 
-export default connect(mapStateToProps)(App);
+
+
+export default AppRouter;
