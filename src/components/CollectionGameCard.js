@@ -1,31 +1,34 @@
 import React, { PropTypes, Component } from 'react';
+import {Link} from 'react-router';
+
+import cleanupName from '../lib/cleanupName';
 
 export default class GameCard extends Component {
   render() {
-    const {game, gameType} = this.props;
+    const {game} = this.props;
 
     const style = {
       background: 'url(\"' + game.thumbnail + '\") center / cover'
     };
 
-    const yearpublished = (game.yearpublished ? 'published: ' + game.yearpublished : '');
-    const gameLink = gameType.url + game.objectid;
-    let gameDisplayName = String(game.name.$t || ''); //yuck
 
-    gameDisplayName = gameDisplayName.replace(/\&amp\;/g, '&')
-                                      .replace(/\&apos\;/g, '\'')
-                                      .replace(/\%28\;/g, '(')
-                                      .replace(/\%29\;/g, ')'); //WTF!!! burn in hell XML
+    const gameLink = '/details/' + game.objectid;
+    let gameDisplayName = cleanupName(game.name.$t);
+
+    if(gameDisplayName.length > 21){
+      gameDisplayName = gameDisplayName.substring(0, 19) + "…";
+    }
 
     return (
-      <div className="demo-card-wide mdl-card mdl-shadow--8dp collection-card">
-        <div className="mdl-card__title"  style={style}>
+      <Link to={gameLink} >
+        <div className="demo-card-wide mdl-card mdl-shadow--8dp collection-card">
+            <div className="mdl-card__title"  style={style}>
+            </div>
+            <div className="mdl-card__supporting-text">
+              {gameDisplayName}
+            </div>
         </div>
-        <div className="mdl-card__supporting-text">
-          <a href={gameLink} target="_blank">{gameDisplayName}</a><br/>
-          {yearpublished}
-        </div>
-      </div>
+      </Link>
     );
   }
 }

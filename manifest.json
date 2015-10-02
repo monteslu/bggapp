@@ -1,6 +1,6 @@
 {
-  "short_name": "BGG Hotness",
-  "name": "Board Game Geek Hotness",
+  "short_name": "BGG Picker",
+  "name": "Board Game Geek Game Picker",
   "icons": [
     {
       "src": "launcher-icon-2x.png",
@@ -20,6 +20,5 @@
   ],
   "theme_color": "#ff0000",
   "background_color": "#ff0000",
-  "start_url": "/bggapp",
   "display": "standalone"
 }

@@ -4,12 +4,6 @@ import UserForm from '../components/UserForm';
 
 
 class Settings extends Component {
-  constructor(props) {
-    super(props);
-    console.log('Settings constructor', Math.random());
-  }
-
-
   render() {
     const { mygames, dispatch } = this.props;
 

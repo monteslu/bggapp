@@ -84,8 +84,8 @@ class Picker extends Component{
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    if(localStorage.games){
+    const { dispatch, mygames } = this.props;
+    if(mygames.games && !mygames.games.length && localStorage.games){
       try{
         dispatch(receiveGames(JSON.parse(localStorage.games)));
       }
@@ -93,7 +93,6 @@ class Picker extends Component{
         console.log('error with localStorage', exp);
       }
     }
-    // dispatch()
   }
 
   render(){
@@ -109,10 +108,7 @@ class Picker extends Component{
       </section>
     ) : '';
 
-    filteredGames = filterGames(picker, filteredGames);
-
-    return (
-    <div>
+    const pickerControls = filteredGames.length ? (
       <section className="pickerControls">
         <div>
           <div className="pickerRow"><PickerSlider value={this.props.picker.minRating} onChange={val => this.change(UPDATE_MIN_RATING, val)} name="my minimum rating" step={0.25} max={10}/></div>
@@ -123,6 +119,13 @@ class Picker extends Component{
           <div className="pickerRow"><div><span>Want To Play: </span><Toggle onToggle={(evt,val) => this.change(UPDATE_WANT_TO_PLAY, val)} defaultToggled={this.props.picker.wantToPlay} name="wantToPlay"/></div></div>
         </div>
       </section>
+    ) : '';
+
+    filteredGames = filterGames(picker, filteredGames);
+
+    return (
+    <div>
+      {pickerControls}
       {userForm}
       <section>
         {filteredGames.map(function(game, i) {

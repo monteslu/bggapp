@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Picker from './Picker';
 import Settings from './Settings';
 import Hotness from './Hotness';
+import GameDetails from './GameDetails';
 
 
 class Layout extends Component {
@@ -46,6 +47,7 @@ class AppRouter extends Component {
         <Route path="/" component={Layout}>
           <Route path="hotness" component={Hotness} />
           <Route path="settings" component={Settings} />
+          <Route path="details/:objectid" component={GameDetails} />
         </Route>
       </Router>
     )

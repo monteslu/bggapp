@@ -237,9 +237,18 @@ html, body {
 }
 
 .demo-card-wide.mdl-card.collection-card {
-  width: 310px;
+  width: 230px;
   margin: 8px;
   float: left;
+}
+
+.detail-card {
+  width: 95%;
+  margin: 8px;
+}
+
+.detail-card div{
+  margin: 10px;
 }
 
 .demo-card-wide > .mdl-card__title {
@@ -268,5 +277,9 @@ html, body {
 }
 
 .pickerValue{
+  font-weight: bold;
+}
+
+.gameDetailVal{
   font-weight: bold;
 }
