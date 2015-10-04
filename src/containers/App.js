@@ -13,8 +13,8 @@ class Layout extends Component {
 
   render() {
     return (
-<div className="mdl-layout mdl-layout--fixed-header">
-  <header className="mdl-layout__header">
+<div>
+  <header style={{backgroundColor: 'rgb(63,81,181)'}}>
     <div className="mdl-layout__header-row">
       <span className="mdl-layout-title"><Link to="/" className="mdl-navigation__link">BGG Picker</Link></span>
       <div className="mdl-layout-spacer"></div>

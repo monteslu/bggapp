@@ -273,7 +273,8 @@ html, body {
 }
 
 .pickerRow{
-  margin: 12px;
+  margin: 4px;
+  padding: 7px;
 }
 
 .pickerValue{
@@ -283,3 +284,10 @@ html, body {
 .gameDetailVal{
   font-weight: bold;
 }
+
+.filterToggle {
+  float: left;
+  margin: 4px;
+  padding: 7px;
+}
+

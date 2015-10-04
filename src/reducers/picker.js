@@ -2,9 +2,11 @@ import {
   UPDATE_MIN_RATING,
   UPDATE_MIN_BGG_RATING,
   UPDATE_NUM_PLAYERS,
-  UPDATE_WANT_TO_PLAY,
   UPDATE_MIN_MINUTES,
-  UPDATE_MAX_MINUTES
+  UPDATE_MAX_MINUTES,
+  UPDATE_WANT_TO_PLAY,
+  UPDATE_EXCLUDE_EXPANSIONS,
+  UPDATE_ONLY_OWNED
 } from '../actions/picker';
 
 
@@ -14,7 +16,9 @@ function pickerState(state = {
    numPlayers: 0,
    wantToPlay: false,
    minMinutes: 0,
-   maxMinutes: 0
+   maxMinutes: 0,
+   excludeExpansions: false,
+   onlyOwned: true
  }, action){
   switch (action.type) {
   case UPDATE_NUM_PLAYERS:
@@ -40,6 +44,14 @@ function pickerState(state = {
   case UPDATE_MAX_MINUTES:
     return Object.assign({}, state, {
       maxMinutes: action.value
+    });
+  case UPDATE_EXCLUDE_EXPANSIONS:
+    return Object.assign({}, state, {
+      excludeExpansions: action.value
+    });
+  case UPDATE_ONLY_OWNED:
+    return Object.assign({}, state, {
+      onlyOwned: action.value
     });
   default:
     return state;

@@ -15,7 +15,9 @@ import { updatePickerFilter,
          UPDATE_NUM_PLAYERS,
          UPDATE_MIN_MINUTES,
          UPDATE_MAX_MINUTES,
-         UPDATE_WANT_TO_PLAY
+         UPDATE_WANT_TO_PLAY,
+         UPDATE_EXCLUDE_EXPANSIONS,
+         UPDATE_ONLY_OWNED
       } from '../actions/picker';
 
 import {
@@ -28,6 +30,7 @@ const gameType = bggTypes.boardgames;
 
 function filterGames(picker, games){
   return filter(games, game =>{
+      //console.log(game.subtype);
       if(picker.minRating && (!parseFloat(game.stats.rating.value, 10) || game.stats.rating.value <=picker.minRating)){
         return false;
       }
@@ -49,6 +52,10 @@ function filterGames(picker, games){
       }
 
       if(picker.wantToPlay && !game.status.wanttoplay){
+        return false;
+      }
+
+      if(picker.onlyOwned && !game.status.own){
         return false;
       }
 
@@ -116,12 +123,23 @@ class Picker extends Component{
           <div className="pickerRow"><PickerSlider value={this.props.picker.numPlayers} onChange={val => this.change(UPDATE_NUM_PLAYERS, val)} name="number of players" step={1} max={15}/></div>
           <div className="pickerRow"><PickerSlider value={this.props.picker.minMinutes} onChange={val => this.change(UPDATE_MIN_MINUTES, val)} name="minimum playtime minutes" step={15} max={300}/></div>
           <div className="pickerRow"><PickerSlider value={this.props.picker.maxMinutes} onChange={val => this.change(UPDATE_MAX_MINUTES, val)} name="maximum playtime minutes" step={15} max={600}/></div>
-          <div className="pickerRow"><div><span>Want To Play: </span><Toggle onToggle={(evt,val) => this.change(UPDATE_WANT_TO_PLAY, val)} defaultToggled={this.props.picker.wantToPlay} name="wantToPlay"/></div></div>
+          <div className="pickerRow">
+            <div style={{width:'100%', margin: '5px'}}>
+              <div className="mdl-shadow--4dp filterToggle">
+                <span>Want to play</span><Toggle onToggle={(evt,val) => this.change(UPDATE_WANT_TO_PLAY, val)} defaultToggled={this.props.picker.wantToPlay} name="wantToPlay"/>
+              </div>
+              <div className="mdl-shadow--4dp filterToggle">
+                <span>Only owned games</span><Toggle onToggle={(evt,val) => this.change(UPDATE_ONLY_OWNED, val)} defaultToggled={this.props.picker.onlyOwned} name="onlyOwned"/>
+              </div>
+            </div>
+          </div>
         </div>
+        <br/>
       </section>
     ) : '';
 
     filteredGames = filterGames(picker, filteredGames);
+    console.log('filteredGames.length', filteredGames.length);
 
     return (
     <div>
