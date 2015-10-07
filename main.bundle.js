@@ -62,7 +62,7 @@
 
 	var _containersApp2 = _interopRequireDefault(_containersApp);
 
-	var _storeConfigureStore = __webpack_require__(615);
+	var _storeConfigureStore = __webpack_require__(617);
 
 	var _storeConfigureStore2 = _interopRequireDefault(_storeConfigureStore);
 
@@ -26619,6 +26619,10 @@
 
 	var _GameDetails2 = _interopRequireDefault(_GameDetails);
 
+	var _webgamesForSolitaire = __webpack_require__(615);
+
+	var _webgamesForSolitaire2 = _interopRequireDefault(_webgamesForSolitaire);
+
 	var Layout = (function (_Component) {
 	  _inherits(Layout, _Component);
 
@@ -26650,7 +26654,7 @@
 	  _createClass(AppRouter, [{
 	    key: 'render',
 	    value: function render() {
-	      return _react2['default'].createElement(_reactRouter.Router, null, _react2['default'].createElement(_reactRouter.Route, { path: '/', component: Layout }, _react2['default'].createElement(_reactRouter.Route, { path: 'hotness', component: _Hotness2['default'] }), _react2['default'].createElement(_reactRouter.Route, { path: 'settings', component: _Settings2['default'] }), _react2['default'].createElement(_reactRouter.Route, { path: 'details/:objectid', component: _GameDetails2['default'] })));
+	      return _react2['default'].createElement(_reactRouter.Router, null, _react2['default'].createElement(_reactRouter.Route, { path: '/', component: Layout }, _react2['default'].createElement(_reactRouter.Route, { path: 'hotness', component: _Hotness2['default'] }), _react2['default'].createElement(_reactRouter.Route, { path: 'settings', component: _Settings2['default'] }), _react2['default'].createElement(_reactRouter.Route, { path: 'details/:objectid', component: _GameDetails2['default'] }), _react2['default'].createElement(_reactRouter.Route, { path: 'fs', component: _webgamesForSolitaire2['default'] })));
 	    }
 	  }]);
 
@@ -70431,11 +70435,10 @@
 	var Hotness = (function (_Component) {
 	  _inherits(Hotness, _Component);
 
-	  function Hotness(props) {
+	  function Hotness() {
 	    _classCallCheck(this, Hotness);
 
-	    _get(Object.getPrototypeOf(Hotness.prototype), 'constructor', this).call(this, props);
-	    console.log('hotness constructor', Math.random());
+	    _get(Object.getPrototypeOf(Hotness.prototype), 'constructor', this).apply(this, arguments);
 	  }
 
 	  _createClass(Hotness, [{
@@ -70816,6 +70819,326 @@
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
+
+	var _createClass = (function () {
+	  function defineProperties(target, props) {
+	    for (var i = 0; i < props.length; i++) {
+	      var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ('value' in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+	    }
+	  }return function (Constructor, protoProps, staticProps) {
+	    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+	  };
+	})();
+
+	var _get = function get(_x, _x2, _x3) {
+	  var _again = true;_function: while (_again) {
+	    var object = _x,
+	        property = _x2,
+	        receiver = _x3;desc = parent = getter = undefined;_again = false;if (object === null) object = Function.prototype;var desc = Object.getOwnPropertyDescriptor(object, property);if (desc === undefined) {
+	      var parent = Object.getPrototypeOf(object);if (parent === null) {
+	        return undefined;
+	      } else {
+	        _x = parent;_x2 = property;_x3 = receiver;_again = true;continue _function;
+	      }
+	    } else if ('value' in desc) {
+	      return desc.value;
+	    } else {
+	      var getter = desc.get;if (getter === undefined) {
+	        return undefined;
+	      }return getter.call(receiver);
+	    }
+	  }
+	};
+
+	function _interopRequireWildcard(obj) {
+	  if (obj && obj.__esModule) {
+	    return obj;
+	  } else {
+	    var newObj = {};if (obj != null) {
+	      for (var key in obj) {
+	        if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+	      }
+	    }newObj['default'] = obj;return newObj;
+	  }
+	}
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { 'default': obj };
+	}
+
+	function _classCallCheck(instance, Constructor) {
+	  if (!(instance instanceof Constructor)) {
+	    throw new TypeError('Cannot call a class as a function');
+	  }
+	}
+
+	function _inherits(subClass, superClass) {
+	  if (typeof superClass !== 'function' && superClass !== null) {
+	    throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass);
+	  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+	}
+
+	var _react = __webpack_require__(184);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(339);
+
+	var _lodash = __webpack_require__(558);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _actionsWebgamesForsolitaire = __webpack_require__(616);
+
+	var forSolitaireActions = _interopRequireWildcard(_actionsWebgamesForsolitaire);
+
+	var _materialUi = __webpack_require__(401);
+
+	var PropCard = (function (_Component) {
+	  _inherits(PropCard, _Component);
+
+	  function PropCard() {
+	    _classCallCheck(this, PropCard);
+
+	    _get(Object.getPrototypeOf(PropCard.prototype), 'constructor', this).apply(this, arguments);
+	  }
+
+	  _createClass(PropCard, [{
+	    key: 'render',
+	    value: function render() {
+	      var style = {};
+	      if (this.props.canClick) {
+	        style.cursor = 'pointer';
+	      }
+	      if (this.props.check) {
+	        style.boxShadow = '0 4px 5px 0 rgba(0,255,0,.14),0 1px 10px 0 rgba(0,255,0,.72),0 2px 4px -1px rgba(0,0,0,.2)';
+	      }
+	      if (this.props.selected) {
+	        style.boxShadow = '0 4px 5px 0 rgba(255,0,0,.14),0 1px 10px 0 rgba(255,0,0,.72),0 2px 4px -1px rgba(0,0,0,.2)';
+	      }
+	      return _react2['default'].createElement('div', { className: 'mdl-shadow--4dp forsolitaire-card', style: style, onClick: this.props.onClick }, _react2['default'].createElement('div', { className: 'forsolitaire-number' }, this.props.value), _react2['default'].createElement('div', { className: 'forsolitaire-name' }, this.props.name));
+	    }
+	  }]);
+
+	  return PropCard;
+	})(_react.Component);
+
+	var ForSolitaire = (function (_Component2) {
+	  _inherits(ForSolitaire, _Component2);
+
+	  function ForSolitaire() {
+	    _classCallCheck(this, ForSolitaire);
+
+	    _get(Object.getPrototypeOf(ForSolitaire.prototype), 'constructor', this).apply(this, arguments);
+	  }
+
+	  _createClass(ForSolitaire, [{
+	    key: 'bidChange',
+	    value: function bidChange(val) {
+	      var dispatch = this.props.dispatch;
+
+	      dispatch((0, _actionsWebgamesForsolitaire.selectBid)(parseInt(val, 10)));
+	    }
+	  }, {
+	    key: 'placeBid',
+	    value: function placeBid() {
+	      var _props = this.props;
+	      var dispatch = _props.dispatch;
+	      var game = _props.game;
+
+	      dispatch((0, _actionsWebgamesForsolitaire.placeBid)(game.selectedBid));
+	    }
+	  }, {
+	    key: 'selectProp',
+	    value: function selectProp(prop) {
+	      var dispatch = this.props.dispatch;
+
+	      console.log('selectProp', prop);
+	      dispatch((0, _actionsWebgamesForsolitaire.selectProp)(prop));
+	    }
+	  }, {
+	    key: 'sellProp',
+	    value: function sellProp() {
+	      var _props2 = this.props;
+	      var dispatch = _props2.dispatch;
+	      var game = _props2.game;
+
+	      dispatch((0, _actionsWebgamesForsolitaire.sellProp)(game.selectedProp));
+	    }
+	  }, {
+	    key: 'nextSell',
+	    value: function nextSell() {
+	      var dispatch = this.props.dispatch;
+
+	      dispatch((0, _actionsWebgamesForsolitaire.nextSell)());
+	    }
+	  }, {
+	    key: 'startGame',
+	    value: function startGame() {
+	      var dispatch = this.props.dispatch;
+
+	      dispatch((0, _actionsWebgamesForsolitaire.startGame)());
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate(prevProps, prevState) {
+	      var game = this.props.game;
+
+	      //HACK for broken RadioButtonGroup
+	      if (this.refs.bidsButtonGroup) {
+	        this.refs.bidsButtonGroup.clearValue();
+	        if (game.selectedBid || game.selectedBid === 0) {
+	          this.refs.bidsButtonGroup.clearValue();
+	          this.refs.bidsButtonGroup.setSelectedValue('' + game.selectedBid);
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this = this;
+
+	      var _props3 = this.props;
+	      var game = _props3.game;
+	      var dispatch = _props3.dispatch;
+
+	      //debugging
+	      window.fsa = forSolitaireActions;
+	      window.dis = dispatch;
+	      window.game = game;
+
+	      var output = _react2['default'].createElement('h2', null, game.phase);
+
+	      if (game.phase === 'buy') {
+	        output = _react2['default'].createElement('div', null, _react2['default'].createElement('div', null, 'Round: ', game.round), _react2['default'].createElement('div', null, 'My Coins: ', game.myCoins), _react2['default'].createElement('div', null, 'Jessica Coins: ', game.jessCoins), _react2['default'].createElement('div', null, game.marketProps.map(function (prop, i) {
+	          return _react2['default'].createElement(PropCard, { value: prop.value, name: prop.name });
+	        })), _react2['default'].createElement('div', { style: { width: '100%', float: 'left' } }), _react2['default'].createElement('div', null, _react2['default'].createElement(_materialUi.RadioButtonGroup, { name: 'bids', onChange: function onChange(evt, val) {
+	            return _this.bidChange(val);
+	          }, ref: 'bidsButtonGroup' }, game.availableBids.map(function (bid, i) {
+	          return _react2['default'].createElement(_materialUi.RadioButton, { value: '' + bid, key: i, label: '' + bid, style: { float: 'left', margin: '5px', width: 'auto' } });
+	        })), _react2['default'].createElement(_materialUi.RaisedButton, { label: 'Place Bid', primary: true, onClick: function onClick(evt) {
+	            return _this.placeBid();
+	          }, style: { float: 'left', marginLeft: '5px' }, disabled: !game.selectedBid && game.selectedBid !== 0 })));
+	      } else if (game.phase === 'sell') {
+	        output = _react2['default'].createElement('div', null, _react2['default'].createElement('div', null, 'Round: ', game.round), _react2['default'].createElement('div', null, game.marketChecks.map(function (check, i) {
+	          return _react2['default'].createElement(PropCard, { value: check.value, name: 'check $', check: true });
+	        })), _react2['default'].createElement('div', { style: { width: '100%', float: 'left' } }), _react2['default'].createElement('div', null, game.myProps.map(function (prop, i) {
+	          return _react2['default'].createElement(PropCard, { selected: game.selectedProp === prop.value, value: prop.value, name: prop.name, onClick: function onClick(evt) {
+	              return _this.selectProp(prop.value);
+	            }, canClick: true });
+	        }), _react2['default'].createElement(_materialUi.RaisedButton, { label: 'Sell Property', primary: true, onClick: function onClick(evt) {
+	            return _this.sellProp();
+	          }, style: { float: 'left' }, disabled: !game.selectedProp })));
+	      } else if (game.phase === 'sellResult') {
+	        output = _react2['default'].createElement('div', null, _react2['default'].createElement('div', null, 'Round: ', game.round), _react2['default'].createElement('div', null, _react2['default'].createElement('span', { style: { float: 'left' } }, 'Me:'), _react2['default'].createElement(PropCard, { value: game.myCheckReward.value, name: 'check $', check: true }), _react2['default'].createElement(PropCard, { value: game.mySoldProp.value, name: game.mySoldProp.name })), _react2['default'].createElement('div', { style: { width: '100%', float: 'left' } }), _react2['default'].createElement('div', null, _react2['default'].createElement('span', { style: { float: 'left' } }, 'Jessica:'), _react2['default'].createElement(PropCard, { value: game.jessCheckReward.value, name: 'check $', check: true }), _react2['default'].createElement(PropCard, { value: game.jessSoldProp.value, name: game.jessSoldProp.name })), _react2['default'].createElement('div', { style: { width: '100%', float: 'left' } }), _react2['default'].createElement('div', null, _react2['default'].createElement(_materialUi.RaisedButton, { label: 'Next Round', primary: true, onClick: function onClick(evt) {
+	            return _this.nextSell();
+	          }, style: { float: 'left' } })));
+	      } else if (game.phase === 'gameover') {
+	        output = _react2['default'].createElement('div', null, _react2['default'].createElement('div', null, _react2['default'].createElement('h3', null, game.winner ? 'Winner !' : 'You lose !')), _react2['default'].createElement('div', { style: { width: '100%', float: 'left' } }), _react2['default'].createElement('div', null, _react2['default'].createElement(PropCard, { value: game.myScore, name: 'My $', check: game.winner, selected: !game.winner }), _react2['default'].createElement(PropCard, { value: game.jessScore, name: 'Jessica $', check: !game.winner, selected: game.winner })), _react2['default'].createElement('div', { style: { width: '100%', float: 'left' } }), _react2['default'].createElement('div', null, _react2['default'].createElement(_materialUi.RaisedButton, { label: 'New Game', primary: true, onClick: function onClick(evt) {
+	            return _this.startGame();
+	          }, style: { float: 'left' } })));
+	      }
+
+	      return _react2['default'].createElement('div', { style: { margin: '5px' } }, output);
+	    }
+	  }]);
+
+	  return ForSolitaire;
+	})(_react.Component);
+
+	ForSolitaire.propTypes = {
+	  dispatch: _react.PropTypes.func.isRequired
+	};
+
+	function mapStateToProps(state) {
+	  var forsolitaire = state.webgames.forsolitaire;
+
+	  return {
+	    game: forsolitaire
+	  };
+	}
+
+	exports['default'] = (0, _reactRedux.connect)(mapStateToProps)(ForSolitaire);
+	module.exports = exports['default'];
+
+/***/ },
+/* 616 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports.startGame = startGame;
+	exports.selectBid = selectBid;
+	exports.placeBid = placeBid;
+	exports.selectProp = selectProp;
+	exports.sellProp = sellProp;
+	exports.nextSell = nextSell;
+	var START_GAME = 'START_GAME';
+	exports.START_GAME = START_GAME;
+	var SELECT_BID = 'SELECT_BID';
+	exports.SELECT_BID = SELECT_BID;
+	var PLACE_BID = 'PLACE_BID';
+	exports.PLACE_BID = PLACE_BID;
+	var SELECT_PROPERTY = 'SELECT_PROPERTY';
+	exports.SELECT_PROPERTY = SELECT_PROPERTY;
+	var SELL_PROPERTY = 'SELL_PROPERTY';
+	exports.SELL_PROPERTY = SELL_PROPERTY;
+	var NEXT_SELL = 'NEXT_SELL';
+
+	exports.NEXT_SELL = NEXT_SELL;
+
+	function startGame() {
+	  return {
+	    type: START_GAME
+	  };
+	}
+
+	function selectBid(amount) {
+	  return {
+	    type: SELECT_BID,
+	    amount: amount
+	  };
+	}
+
+	function placeBid(amount) {
+	  return {
+	    type: PLACE_BID,
+	    amount: amount
+	  };
+	}
+
+	function selectProp(propNum) {
+	  return {
+	    type: SELECT_PROPERTY,
+	    propNum: propNum
+	  };
+	}
+
+	function sellProp(propNum) {
+	  return {
+	    type: SELL_PROPERTY,
+	    propNum: propNum
+	  };
+	}
+
+	function nextSell() {
+	  return {
+	    type: NEXT_SELL
+	  };
+	}
+
+/***/ },
+/* 617 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 	exports['default'] = configureStore;
 
 	function _interopRequireDefault(obj) {
@@ -70824,30 +71147,35 @@
 
 	var _redux = __webpack_require__(347);
 
-	var _reduxThunk = __webpack_require__(616);
+	var _reduxThunk = __webpack_require__(618);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _reduxLogger = __webpack_require__(617);
+	var _reduxLogger = __webpack_require__(619);
 
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
-	var _reducersHotness = __webpack_require__(618);
+	var _reducersHotness = __webpack_require__(620);
 
 	var _reducersHotness2 = _interopRequireDefault(_reducersHotness);
 
-	var _reducersPicker = __webpack_require__(619);
+	var _reducersPicker = __webpack_require__(621);
 
 	var _reducersPicker2 = _interopRequireDefault(_reducersPicker);
 
-	var _reducersMygames = __webpack_require__(620);
+	var _reducersMygames = __webpack_require__(622);
 
 	var _reducersMygames2 = _interopRequireDefault(_reducersMygames);
+
+	var _reducersWebgames = __webpack_require__(623);
+
+	var _reducersWebgames2 = _interopRequireDefault(_reducersWebgames);
 
 	var reducer = (0, _redux.combineReducers)({
 	  hotness: _reducersHotness2['default'],
 	  picker: _reducersPicker2['default'],
-	  mygames: _reducersMygames2['default']
+	  mygames: _reducersMygames2['default'],
+	  webgames: _reducersWebgames2['default']
 	});
 
 	var createStoreWithMiddleware = (0, _redux.applyMiddleware)(_reduxThunk2['default'], _reduxLogger2['default'])(_redux.createStore);
@@ -70861,7 +71189,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 616 */
+/* 618 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -70883,7 +71211,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 617 */
+/* 619 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -70930,7 +71258,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 618 */
+/* 620 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70967,7 +71295,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 619 */
+/* 621 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71032,7 +71360,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 620 */
+/* 622 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71088,6 +71416,283 @@
 	}
 
 	exports['default'] = mygames;
+	module.exports = exports['default'];
+
+/***/ },
+/* 623 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	function _interopRequireDefault(obj) {
+	    return obj && obj.__esModule ? obj : { 'default': obj };
+	}
+
+	var _redux = __webpack_require__(347);
+
+	var _forsolitaire = __webpack_require__(624);
+
+	var _forsolitaire2 = _interopRequireDefault(_forsolitaire);
+
+	var reducer = (0, _redux.combineReducers)({
+	    forsolitaire: _forsolitaire2['default']
+	});
+
+	exports['default'] = reducer;
+	module.exports = exports['default'];
+
+/***/ },
+/* 624 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _lodash = __webpack_require__(558);
+
+	var _actionsWebgamesForsolitaire = __webpack_require__(616);
+
+	var allProperties = [{ value: 1, name: 'cardboard box' }, { value: 2, name: 'outhouse' }, { value: 3, name: 'sewer' }, { value: 4, name: 'dog house' }, { value: 5, name: 'cave' }, { value: 6, name: 'tepee' }, { value: 7, name: 'tent' }, { value: 8, name: 'igloo' }, { value: 9, name: 'beach shack' }, { value: 10, name: 'wood shack' }, { value: 11, name: 'tree house' }, { value: 12, name: 'stone house' }, { value: 13, name: 'tiny island' }, { value: 14, name: 'camper' }, { value: 15, name: 'log cabbin' }, { value: 16, name: 'lighthouse' }, { value: 17, name: 'houseboat' }, { value: 18, name: 'R.V.' }, { value: 19, name: 'flat' }, { value: 20, name: 'condo' }, { value: 21, name: 'house' }, { value: 22, name: 'big house' }, { value: 23, name: 'haunted house' }, { value: 24, name: 'beachfront' }, { value: 25, name: 'mansion' }, { value: 26, name: 'small castle' }, { value: 27, name: 'large mansion' }, { value: 28, name: 'large castle' }, { value: 29, name: 'sky scraper' }, { value: 30, name: 'space station' }];
+
+	var allChecks = [{ value: 0 }, { value: 0 }, { value: 2000 }, { value: 2000 }, { value: 3000 }, { value: 3000 }, { value: 4000 }, { value: 4000 }, { value: 5000 }, { value: 5000 }, { value: 6000 }, { value: 6000 }, { value: 7000 }, { value: 7000 }, { value: 8000 }, { value: 8000 }, { value: 9000 }, { value: 9000 }, { value: 10000 }, { value: 10000 }, { value: 11000 }, { value: 11000 }, { value: 12000 }, { value: 12000 }, { value: 13000 }, { value: 13000 }, { value: 14000 }, { value: 14000 }, { value: 15000 }, { value: 15000 }];
+
+	function drawCards(deck, num) {
+	  var retVal = [];
+	  for (var int = 0; int < num; int++) {
+	    if (deck.length) {
+	      retVal.push(deck.shift());
+	    }
+	  }
+	  return retVal;
+	}
+
+	function getBids(jessCoins, myCoins) {
+	  var retVal = undefined;
+	  if (jessCoins < 1) {
+	    retVal = [0, 1];
+	  } else {
+	    retVal = [0, jessCoins, jessCoins + 1];
+	  }
+	  return (0, _lodash.filter)(retVal, function (val) {
+	    return myCoins >= val;
+	  });
+	}
+
+	function customSorter(x, y) {
+	  return x.value < y.value ? -1 : x.value > y.value ? 1 : 0;
+	}
+
+	function removeCards(deck, value) {
+	  return (0, _lodash.filter)(deck, function (card) {
+	    return card.value != value;
+	  });
+	}
+
+	function selectCard(deck, value) {
+	  return (0, _lodash.find)(deck, { value: value });
+	}
+
+	function initialize() {
+	  var initialgProps = (0, _lodash.shuffle)(allProperties);
+	  var initialgChecks = (0, _lodash.shuffle)(allChecks);
+	  var initialmarketProps = drawCards(initialgProps, 3);
+
+	  var initialjessCoins = 3;
+	  var initialmyCoins = 16;
+	  var initialavailableBids = getBids(initialjessCoins, initialmyCoins);
+
+	  return {
+	    gChecks: initialgChecks,
+	    gProps: initialgProps,
+	    marketProps: initialmarketProps.sort(customSorter),
+	    marketChecks: [],
+	    jessCoins: initialjessCoins,
+	    selectedBid: null,
+	    selectedProp: null,
+	    availableBids: initialavailableBids,
+	    jessChecks: [],
+	    jessProps: [],
+	    myCoins: initialmyCoins,
+	    myChecks: [],
+	    myProps: [],
+	    mySoldProps: [],
+	    jessSoldProps: [],
+	    jessCheckReward: null,
+	    myCheckReward: null,
+	    phase: 'buy',
+	    round: 1,
+	    myScore: 0,
+	    jessScore: 0
+	  };
+	}
+
+	function handlePlaceBid(state, action) {
+	  var myProps = state.myProps;
+	  var jessProps = state.jessProps;
+	  var jessCoins = state.jessCoins;
+	  var myCoins = state.myCoins;
+	  var marketProps = state.marketProps;
+	  var gProps = state.gProps;
+	  var gChecks = state.gChecks;
+	  var phase = state.phase;
+	  var marketChecks = state.marketChecks;
+	  var selectedBid = state.selectedBid;
+	  var availableBids = state.availableBids;
+	  var round = state.round;
+
+	  console.log('handlePlaceBid', myProps);
+	  myCoins = myCoins - action.amount;
+	  selectedBid = null;
+	  if (action.amount > jessCoins) {
+	    myProps.push(marketProps[2]);
+	    jessProps.push(marketProps[1]);
+	    jessCoins++;
+	  } else if (action.amount === jessCoins) {
+	    myProps.push(marketProps[1]);
+	    jessProps.push(marketProps[2]);
+	  } else {
+	    myProps.push(marketProps[0]);
+	    jessProps.push(marketProps[2]);
+	    jessCoins--;
+	    if (jessCoins < 0) {
+	      jessCoins = 0;
+	    }
+	  }
+
+	  round = 10 - gProps.length / 3;
+
+	  if (gProps.length) {
+	    marketProps = drawCards(gProps, 3).sort(customSorter);
+	    availableBids = getBids(jessCoins, myCoins);
+	  } else {
+	    phase = 'sell';
+	    marketChecks = drawCards(gChecks, 3).sort(customSorter);
+	    myProps = myProps.sort(customSorter);
+	    round = 1;
+	  }
+
+	  return Object.assign({}, state, {
+	    myProps: myProps, jessProps: jessProps, jessCoins: jessCoins, myCoins: myCoins, marketProps: marketProps, gProps: gProps, phase: phase, marketChecks: marketChecks, gChecks: gChecks, selectedBid: null, availableBids: availableBids, round: round
+	  });
+	}
+
+	function handleSellProperty(state, action) {
+	  var myProps = state.myProps;
+	  var myChecks = state.myChecks;
+	  var jessProps = state.jessProps;
+	  var jessChecks = state.jessChecks;
+	  var gChecks = state.gChecks;
+	  var phase = state.phase;
+	  var marketChecks = state.marketChecks;
+	  var selectedProp = state.selectedProp;
+	  var jessCheckReward = state.jessCheckReward;
+	  var myCheckReward = state.myCheckReward;
+	  var round = state.round;
+	  var myScore = state.myScore;
+	  var jessScore = state.jessScore;
+	  var winner = state.winner;
+
+	  jessProps = (0, _lodash.shuffle)(jessProps);
+	  var jessChoices = drawCards(jessProps, 2).sort(customSorter);
+	  var mySoldProp = selectCard(myProps, action.propNum);
+	  var jessSoldProp = undefined;
+	  myProps = removeCards(myProps, action.propNum);
+	  selectedProp = null;
+
+	  if (action.propNum > jessChoices[0].value && (!jessChoices[1] || action.propNum > jessChoices[1].value)) {
+	    //1. Your card is the highest:
+	    //  The third check is always discarded.
+	    //  Discard your property and take the highest value check, awesome.
+	    myChecks.push(marketChecks[2]);
+	    //  Jessica discards her lowest value property and takes the second highest check.
+	    jessSoldProp = jessChoices[0];
+	    jessChecks.push(marketChecks[1]);
+	    //  Return Jessica's other property to her deck and shuffle for her.
+	    if (jessChoices[1]) {
+	      jessProps.push(jessChoices[1]);
+	    }
+	  } else if (action.propNum < jessChoices[0].value && (!jessChoices[1] || action.propNum < jessChoices[1].value)) {
+	    //2. Your card is the lowest:
+	    //  Take the lowest value check, lame, but don't discard your property.
+	    myChecks.push(marketChecks[0]);
+	    //  Jessica discards her highest value card for the highest value check.
+	    jessSoldProp = jessChoices[1] || jessChoices[0];
+	    jessChecks.push(marketChecks[2]);
+	    //  Put your property from this round into Jessica's deck and discard her other property.
+	    // (Basically discard both of Jessica's properties, give her your crappy property)
+	    jessProps.push(mySoldProp);
+	  } else {
+	    //3. Your card is in between:
+	    //  Discard your card for the middle value check.
+	    myChecks.push(marketChecks[1]);
+	    //  Discard Jessica's highest value card for the best check.
+	    jessSoldProp = jessChoices[1] || jessChoices[0];
+	    jessChecks.push(marketChecks[2]);
+	    //  Return Jessica's unused card to her deck.
+	    jessProps.push(jessChoices[1] || jessChoices[0]);
+	  }
+	  jessCheckReward = jessChecks[jessChecks.length - 1];
+	  myCheckReward = myChecks[myChecks.length - 1];
+
+	  if (gChecks.length) {
+	    marketChecks = drawCards(gChecks, 3).sort(customSorter);
+	    phase = 'sellResult';
+	  } else {
+	    myScore = (0, _lodash.reduce)(myChecks, function (total, _ref) {
+	      var value = _ref.value;
+	      return total + value;
+	    }, 0);
+	    jessScore = (0, _lodash.reduce)(jessChecks, function (total, _ref2) {
+	      var value = _ref2.value;
+	      return total + value;
+	    }, 0);
+	    winner = myScore > jessScore;
+	    phase = 'gameover';
+	  }
+
+	  round = 10 - gChecks.length / 3;
+
+	  return Object.assign({}, state, {
+	    myProps: myProps, jessProps: jessProps, gChecks: gChecks, phase: phase, marketChecks: marketChecks, selectedProp: selectedProp, round: round, jessCheckReward: jessCheckReward, myCheckReward: myCheckReward, jessSoldProp: jessSoldProp, mySoldProp: mySoldProp, myScore: myScore, jessScore: jessScore, winner: winner
+	  });
+	}
+
+	function forsolitaireReducer(state, action) {
+	  if (state === undefined) state = initialize();
+
+	  switch (action.type) {
+	    case _actionsWebgamesForsolitaire.START_GAME:
+	      return initialize();
+	    case _actionsWebgamesForsolitaire.SELECT_BID:
+	      console.log('forsolitaireReducer', action);
+	      return Object.assign({}, state, {
+	        selectedBid: action.amount
+	      });
+	    case _actionsWebgamesForsolitaire.SELECT_PROPERTY:
+	      return Object.assign({}, state, {
+	        selectedProp: action.propNum
+	      });
+	    case _actionsWebgamesForsolitaire.PLACE_BID:
+	      return handlePlaceBid(state, action);
+	    case _actionsWebgamesForsolitaire.SELL_PROPERTY:
+	      return handleSellProperty(state, action);
+	    case _actionsWebgamesForsolitaire.NEXT_SELL:
+	      return Object.assign({}, state, {
+	        phase: 'sell'
+	      });
+	    default:
+	      return state;
+	  }
+	}
+
+	exports['default'] = forsolitaireReducer;
 	module.exports = exports['default'];
 
 /***/ }

@@ -7,10 +7,6 @@ import bggTypes from '../constants/bgg-types';
 import {LinearProgress} from 'material-ui';
 
 class Hotness extends Component {
-  constructor(props) {
-    super(props);
-    console.log('hotness constructor', Math.random());
-  }
 
   componentDidMount() {
     const { dispatch } = this.props;

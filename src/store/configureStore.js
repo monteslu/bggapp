@@ -4,11 +4,13 @@ import loggerMiddleware from 'redux-logger';
 import hotness from '../reducers/hotness';
 import picker from '../reducers/picker';
 import mygames from '../reducers/mygames';
+import webgames from '../reducers/webgames';
 
 const reducer = combineReducers({
     hotness,
     picker,
-    mygames
+    mygames,
+    webgames
 });
 
 const createStoreWithMiddleware = applyMiddleware(

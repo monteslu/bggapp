@@ -6,6 +6,7 @@ import Picker from './Picker';
 import Settings from './Settings';
 import Hotness from './Hotness';
 import GameDetails from './GameDetails';
+import ForSolitaire from './webgames/ForSolitaire';
 
 
 class Layout extends Component {
@@ -48,6 +49,7 @@ class AppRouter extends Component {
           <Route path="hotness" component={Hotness} />
           <Route path="settings" component={Settings} />
           <Route path="details/:objectid" component={GameDetails} />
+          <Route path="fs" component={ForSolitaire} />
         </Route>
       </Router>
     )
