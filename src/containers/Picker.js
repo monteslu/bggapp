@@ -1,24 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import {DropDownMenu, Slider, Toggle} from 'material-ui';
+
 import {filter} from 'lodash';
 
 import GameCard from '../components/CollectionGameCard';
 import UserForm from '../components/UserForm';
+import PickerControls from '../components/PickerControls';
 
 import bggTypes from '../constants/bgg-types';
 
-
-import { updatePickerFilter,
-         UPDATE_MIN_RATING,
-         UPDATE_MIN_BGG_RATING,
-         UPDATE_NUM_PLAYERS,
-         UPDATE_MIN_MINUTES,
-         UPDATE_MAX_MINUTES,
-         UPDATE_WANT_TO_PLAY,
-         UPDATE_EXCLUDE_EXPANSIONS,
-         UPDATE_ONLY_OWNED
-      } from '../actions/picker';
 
 import {
          receiveGames
@@ -30,7 +20,6 @@ const gameType = bggTypes.boardgames;
 
 function filterGames(picker, games){
   return filter(games, game =>{
-      //console.log(game.subtype);
       if(picker.minRating && (!parseFloat(game.stats.rating.value, 10) || game.stats.rating.value <=picker.minRating)){
         return false;
       }
@@ -55,6 +44,10 @@ function filterGames(picker, games){
         return false;
       }
 
+      if(picker.excludeExpansions && game.subtype === 'boardgameexpansion'){
+        return false;
+      }
+
       if(picker.onlyOwned && !game.status.own){
         return false;
       }
@@ -63,32 +56,40 @@ function filterGames(picker, games){
     });
 }
 
-class PickerSlider extends Component {
-
-  render(){
-    const{onChange} = this.props;
-    let valDisplay = this.props.value + '/' + this.props.max;
-    if(!this.props.value){
-      valDisplay = 'Any';
+function sort(games, sortBy){
+  return games.sort((a,b) => {
+    if(sortBy === 'bggrating'){
+      if(a.stats.rating.average.value === b.stats.rating.average.value){
+        return 0;
+      }
+      return a.stats.rating.average.value < b.stats.rating.average.value ? 1 : -1;
     }
-
-    const sliderStyle = {
-      marginTop: '8px',
-      marginBottom: '20px'
-    };
-
-    return <div><span>{this.props.name}: </span><span className="pickerValue">{valDisplay}</span><Slider style={sliderStyle} defaultValue={5.0} step={this.props.step || 0.10} onChange={(e, val) => onChange(val)} min={this.props.min || 0} max={this.props.max} value={this.props.value}/></div>;
-  }
-
-};
+    else if(sortBy === 'playingtime'){
+      if(a.stats.playingtime === b.stats.playingtime){
+        return 0;
+      }
+      return a.stats.playingtime < b.stats.playingtime ? 1 : -1;
+    }
+    else if(sortBy === 'numplays'){
+      if(a.numplays === b.numplays){
+        return 0;
+      }
+      return a.numplays < b.numplays ? 1 : -1;
+    }
+    else{
+      a.stats.rating.value = a.stats.rating.value || 0;
+      b.stats.rating.value = b.stats.rating.value || 0;
+      if(a.stats.rating.value === b.stats.rating.value){
+        return 0;
+      }
+      return a.stats.rating.value < b.stats.rating.value ? 1 : -1;
+    }
+  });
+}
 
 
 class Picker extends Component{
 
-  change(type, val){
-    const { dispatch } = this.props;
-    dispatch(updatePickerFilter(type, val));
-  }
 
   componentDidMount() {
     const { dispatch, mygames } = this.props;
@@ -116,30 +117,12 @@ class Picker extends Component{
     ) : '';
 
     const pickerControls = filteredGames.length ? (
-      <section className="pickerControls">
-        <div>
-          <div className="pickerRow"><PickerSlider value={this.props.picker.minRating} onChange={val => this.change(UPDATE_MIN_RATING, val)} name="my minimum rating" step={0.25} max={10}/></div>
-          <div className="pickerRow"><PickerSlider value={this.props.picker.minBggRating} onChange={val => this.change(UPDATE_MIN_BGG_RATING, val)} name="bgg minimum rating" step={0.25} max={10}/></div>
-          <div className="pickerRow"><PickerSlider value={this.props.picker.numPlayers} onChange={val => this.change(UPDATE_NUM_PLAYERS, val)} name="number of players" step={1} max={15}/></div>
-          <div className="pickerRow"><PickerSlider value={this.props.picker.minMinutes} onChange={val => this.change(UPDATE_MIN_MINUTES, val)} name="minimum playtime minutes" step={15} max={300}/></div>
-          <div className="pickerRow"><PickerSlider value={this.props.picker.maxMinutes} onChange={val => this.change(UPDATE_MAX_MINUTES, val)} name="maximum playtime minutes" step={15} max={600}/></div>
-          <div className="pickerRow">
-            <div style={{width:'100%', margin: '5px'}}>
-              <div className="mdl-shadow--4dp filterToggle">
-                <span>Want to play</span><Toggle onToggle={(evt,val) => this.change(UPDATE_WANT_TO_PLAY, val)} defaultToggled={this.props.picker.wantToPlay} name="wantToPlay"/>
-              </div>
-              <div className="mdl-shadow--4dp filterToggle">
-                <span>Only owned games</span><Toggle onToggle={(evt,val) => this.change(UPDATE_ONLY_OWNED, val)} defaultToggled={this.props.picker.onlyOwned} name="onlyOwned"/>
-              </div>
-            </div>
-          </div>
-        </div>
-        <br/>
-      </section>
+      <PickerControls dispatch={dispatch} picker={picker}/>
     ) : '';
 
     filteredGames = filterGames(picker, filteredGames);
     console.log('filteredGames.length', filteredGames.length);
+    filteredGames = sort(filteredGames, picker.sortBy);
 
     return (
     <div>

@@ -11,6 +11,8 @@ export const UPDATE_WANT_TO_PLAY = 'UPDATE_WANT_TO_PLAY';
 export const UPDATE_EXCLUDE_EXPANSIONS = 'UPDATE_EXCLUDE_EXPANSIONS';
 export const UPDATE_ONLY_OWNED = 'UPDATE_ONLY_OWNED';
 
+export const UPDATE_SORT_BY = 'UPDATE_SORT_BY';
+
 export function updatePickerFilter(type, value){
   return {
     type,

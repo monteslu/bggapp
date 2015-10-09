@@ -64,7 +64,8 @@ class GameDetails extends Component {
             <div className="mdl-card__supporting-text">
               <a href={bggLink} target="_blank">{bggLink}</a><br/>
               Year Published: <span className="gameDetailVal">{game.yearpublished}</span><br/>
-              My Rating: <span className="gameDetailVal">{game.stats.rating.userrated.value}</span><br/>
+              My Num Plays: <span className="gameDetailVal">{game.numplays}</span><br/>
+              My Rating: <span className="gameDetailVal">{game.stats.rating.value}</span><br/>
               Avg BGG Rating: <span className="gameDetailVal">{game.stats.rating.average.value}</span><br/>
               Min # Players: <span className="gameDetailVal">{game.stats.minplayers}</span><br/>
               Max # Players: <span className="gameDetailVal">{game.stats.maxplayers}</span><br/>

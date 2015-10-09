@@ -22,6 +22,7 @@ class Layout extends Component {
       <nav className="mdl-navigation">
         <Link to="/hotness" className="mdl-navigation__link">Hotness</Link>
         <Link to="/settings" className="mdl-navigation__link">Settings</Link>
+        <Link to="/fs" className="mdl-navigation__link">Play</Link>
       </nav>
     </div>
   </header>

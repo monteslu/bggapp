@@ -155,11 +155,11 @@ function handlePlaceBid(state, action){
     }
   }
 
-  round = (10 - (gProps.length / 3));
 
   if(gProps.length){
     marketProps = drawCards(gProps, 3).sort(customSorter);
     availableBids = getBids(jessCoins, myCoins);
+    round = (10 - (gProps.length / 3));
   }
   else{
     phase = 'sell';

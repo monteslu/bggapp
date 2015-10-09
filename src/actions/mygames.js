@@ -1,4 +1,5 @@
 import {collection} from '../lib/bgg';
+import when from 'when';
 
 export const REQUEST_MY_GAMES = 'REQUEST_MY_GAMES';
 export const RECEIVE_MY_GAMES = 'RECEIVE_MY_GAMES';
@@ -50,15 +51,12 @@ function fetchGames(username) {
     dispatch(requestGames());
 
     return collection(username)
-      .then(response => response.entity)
-      .then(json => {
+      .then(games => {
+        console.log('my games fetched', games);
 
-        console.log('my games fetched', json);
-
-        if(json.message){
+        if(games.message){
           return dispatch(collectionQueued());
         }
-        let games = json.items.item;
         localStorage.games = JSON.stringify(games);
         return dispatch(receiveGames(games));
       })

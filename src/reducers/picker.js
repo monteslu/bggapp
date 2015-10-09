@@ -6,19 +6,30 @@ import {
   UPDATE_MAX_MINUTES,
   UPDATE_WANT_TO_PLAY,
   UPDATE_EXCLUDE_EXPANSIONS,
-  UPDATE_ONLY_OWNED
+  UPDATE_ONLY_OWNED,
+  UPDATE_SORT_BY
 } from '../actions/picker';
 
+let initialState;
 
-function pickerState(state = {
+try{
+  initialState = JSON.parse(localStorage.picker);
+}
+catch(exp){
+  //whatevs
+}
+
+
+function pickerState(state = initialState || {
    minRating: 0,
    minBggRating: 5,
    numPlayers: 0,
    wantToPlay: false,
    minMinutes: 0,
    maxMinutes: 0,
-   excludeExpansions: false,
-   onlyOwned: true
+   excludeExpansions: true,
+   onlyOwned: true,
+   sortBy: 'rating'
  }, action){
   switch (action.type) {
   case UPDATE_NUM_PLAYERS:
@@ -52,6 +63,10 @@ function pickerState(state = {
   case UPDATE_ONLY_OWNED:
     return Object.assign({}, state, {
       onlyOwned: action.value
+    });
+  case UPDATE_SORT_BY:
+    return Object.assign({}, state, {
+      sortBy: action.value
     });
   default:
     return state;

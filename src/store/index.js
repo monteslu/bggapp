@@ -14,12 +14,14 @@ const reducer = combineReducers({
 });
 
 const createStoreWithMiddleware = applyMiddleware(
-  thunkMiddleware,
-  loggerMiddleware
+  thunkMiddleware
 )(createStore);
 
-export default function configureStore(initialState) {
+function configureStore(initialState) {
   const storeCreator = createStoreWithMiddleware(reducer, initialState);
 
   return storeCreator;
 }
+
+
+export default configureStore(); //TODO research why maybe should be a singleton.

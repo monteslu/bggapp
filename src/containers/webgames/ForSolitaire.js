@@ -6,11 +6,12 @@ import {selectBid, placeBid, selectProp, sellProp, nextSell, startGame} from '..
 import {LinearProgress, RadioButtonGroup, RadioButton, RaisedButton} from 'material-ui';
 
 
-
 class PropCard extends Component {
 
   render(){
-    const style = {};
+    const style = {
+      backgroundColor: this.props.backgroundColor || '#EFEBD6'
+    };
     if(this.props.canClick){
       style.cursor = 'pointer';
     }
@@ -89,6 +90,8 @@ class ForSolitaire extends Component {
     window.fsa = forSolitaireActions;
     window.dis = dispatch;
     window.game = game;
+
+    console.log('rendering ForSolitaire', game);
 
 
     let output = (<h2>{game.phase}</h2>);

@@ -1,8 +1,9 @@
 import 'babel-core/polyfill';
-import React from 'react';
+import React, {Component} from 'react';
+
 import { Provider } from 'react-redux';
 import App from './containers/App';
-import configureStore from './store/configureStore'
+import store from './store'
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.bundle.js')
@@ -13,8 +14,6 @@ if ('serviceWorker' in navigator) {
     console.log('Boo no serviceWorker!', err);
   });
 }
-
-const store = configureStore();
 
 React.render(
   <Provider store={store}>
