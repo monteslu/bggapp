@@ -1,11 +1,11 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
 
 export default class GameCard extends Component {
   render() {
     const {game, gameType} = this.props;
 
     const style = {
-      background: 'url(\"' + game.thumbnail.value + '\") center / cover'
+      background: `url("${game.thumbnail.value}") center / cover`
     };
 
     const yearpublished = (game.yearpublished ? 'published: ' + game.yearpublished.value : '');
@@ -28,4 +28,3 @@ export default class GameCard extends Component {
     );
   }
 }
-

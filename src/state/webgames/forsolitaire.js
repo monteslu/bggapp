@@ -1,13 +1,14 @@
-import {shuffle, filter, find, reduce} from 'lodash';
+import { shuffle, filter, find, reduce } from 'lodash';
+import { makeActionCreator } from 'cooldux';
 
-import {
-  START_GAME,
-  SELECT_BID,
-  PLACE_BID,
-  SELECT_PROPERTY,
-  SELL_PROPERTY,
-  NEXT_SELL
-} from '../../actions/webgames/forsolitaire';
+
+export const startGame = makeActionCreator('START_GAME', 'forSolitaire');
+export const selectBid = makeActionCreator('SELECT_BID', 'forSolitaire');
+export const placeBid = makeActionCreator('PLACE_BID', 'forSolitaire');
+export const selectProp = makeActionCreator('SELECT_PROPERTY', 'forSolitaire');
+export const sellProp = makeActionCreator('SELL_PROPERTY', 'forSolitaire');
+export const nextSell = makeActionCreator('NEXT_SELL', 'forSolitaire');
+
 
 const allProperties = [
   {value: 1, name: 'cardboard box'},
@@ -89,7 +90,7 @@ function customSorter(x,y){
 
 function removeCards(deck, value){
   return filter(deck, card => {
-    return card.value != value;
+    return card.value !== value;
   });
 }
 
@@ -132,17 +133,16 @@ function initialize(){
   };
 }
 
-function handlePlaceBid(state, action){
-  let {myProps, jessProps, jessCoins, myCoins, marketProps, gProps, gChecks, phase, marketChecks, selectedBid, availableBids, round} = state;
+function handlePlaceBid(state, payload){
+  let {myProps, jessProps, jessCoins, marketProps, gProps, gChecks, phase, marketChecks, availableBids, round} = state;
   console.log('handlePlaceBid', myProps);
-  myCoins = myCoins - action.amount;
-  selectedBid = null;
-  if(action.amount > jessCoins){
+  let myCoins = state.myCoins - payload;
+  if(payload > jessCoins){
     myProps.push(marketProps[2]);
     jessProps.push(marketProps[1]);
     jessCoins++;
   }
-  else if(action.amount === jessCoins){
+  else if(payload === jessCoins){
     myProps.push(marketProps[1]);
     jessProps.push(marketProps[2]);
   }
@@ -168,30 +168,27 @@ function handlePlaceBid(state, action){
     round = 1;
   }
 
-
-
-  return Object.assign({}, state, {
-    myProps, jessProps, jessCoins, myCoins, marketProps, gProps, phase, marketChecks, gChecks, selectedBid: null, availableBids, round
-  });
+  return {...state, myProps, jessProps, jessCoins, myCoins, marketProps, gProps, phase, marketChecks, gChecks, selectedBid: null, availableBids, round};
 }
 
-function handleSellProperty(state, action){
+function handleSellProperty(state, payload){
   let {myProps, myChecks, jessProps, jessChecks, gChecks, phase, marketChecks, selectedProp, jessCheckReward, myCheckReward, round, myScore, jessScore, winner} = state;
   jessProps = shuffle(jessProps);
   let jessChoices = drawCards(jessProps, 2).sort(customSorter);
-  const mySoldProp = selectCard(myProps, action.propNum);
-  let jessSoldProp;
-  myProps = removeCards(myProps, action.propNum);
+  const mySoldProp = selectCard(myProps, payload);
+  let jessSoldProp, jessUnsoldProp;
+  myProps = removeCards(myProps, payload);
   selectedProp = null;
 
 
-  if(action.propNum > jessChoices[0].value && (!jessChoices[1] || (action.propNum > jessChoices[1].value))){
+  if(payload > jessChoices[0].value && (!jessChoices[1] || (payload > jessChoices[1].value))){
     //1. Your card is the highest:
     //  The third check is always discarded.
     //  Discard your property and take the highest value check, awesome.
     myChecks.push(marketChecks[2]);
     //  Jessica discards her lowest value property and takes the second highest check.
     jessSoldProp = jessChoices[0];
+    jessUnsoldProp = jessChoices[1];
     jessChecks.push(marketChecks[1]);
     //  Return Jessica's other property to her deck and shuffle for her.
     if(jessChoices[1]){
@@ -199,12 +196,13 @@ function handleSellProperty(state, action){
     }
 
   }
-  else if(action.propNum < jessChoices[0].value && (!jessChoices[1] || (action.propNum < jessChoices[1].value))){
+  else if(payload < jessChoices[0].value && (!jessChoices[1] || (payload < jessChoices[1].value))){
     //2. Your card is the lowest:
     //  Take the lowest value check, lame, but don't discard your property.
     myChecks.push(marketChecks[0]);
     //  Jessica discards her highest value card for the highest value check.
     jessSoldProp = jessChoices[1] || jessChoices[0];
+    jessUnsoldProp = jessChoices[0];
     jessChecks.push(marketChecks[2]);
     //  Put your property from this round into Jessica's deck and discard her other property.
     // (Basically discard both of Jessica's properties, give her your crappy property)
@@ -216,6 +214,7 @@ function handleSellProperty(state, action){
     myChecks.push(marketChecks[1]);
     //  Discard Jessica's highest value card for the best check.
     jessSoldProp = jessChoices[1] || jessChoices[0];
+    jessUnsoldProp = jessChoices[0];
     jessChecks.push(marketChecks[2]);
     //  Return Jessica's unused card to her deck.
     jessProps.push(jessChoices[1] || jessChoices[0]);
@@ -238,36 +237,28 @@ function handleSellProperty(state, action){
 
   round = (10 - (gChecks.length / 3));
 
-  return Object.assign({}, state, {
-    myProps, jessProps, gChecks, phase, marketChecks, selectedProp, round, jessCheckReward, myCheckReward, jessSoldProp, mySoldProp, myScore, jessScore, winner
-  });
+  return {...state, myProps, jessProps, gChecks, phase, marketChecks, selectedProp, round, jessCheckReward, myCheckReward, jessSoldProp, jessUnsoldProp, mySoldProp, myScore, jessScore, winner}
 }
 
-function forsolitaireReducer(state = initialize(), action) {
+function reducer(state = initialize(), {type, payload}) {
 
-  switch (action.type) {
-  case START_GAME:
+  switch (type) {
+  case startGame.type:
     return initialize();
-  case SELECT_BID:
-    console.log('forsolitaireReducer', action);
-    return Object.assign({}, state, {
-      selectedBid: action.amount
-    });
-  case SELECT_PROPERTY:
-    return Object.assign({}, state, {
-      selectedProp: action.propNum
-    });
-  case PLACE_BID:
-    return handlePlaceBid(state, action);
-  case SELL_PROPERTY:
-    return handleSellProperty(state, action);
-  case NEXT_SELL:
-    return Object.assign({}, state, {
-      phase: 'sell'
-    });
+  case selectBid.type:
+    console.log('forsolitaireReducer', type, payload);
+    return {...state, selectedBid: payload};
+  case selectProp.type:
+    return {...state, selectedProp: payload};
+  case placeBid.type:
+    return handlePlaceBid(state, payload);
+  case sellProp.type:
+    return handleSellProperty(state, payload);
+  case nextSell.type:
+    return {...state, phase: 'sell'}
   default:
     return state;
   }
 }
 
-export default forsolitaireReducer;
+export default reducer;

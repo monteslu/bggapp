@@ -1,19 +1,15 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import {filter} from 'lodash';
 
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 import GameCard from '../components/CollectionGameCard';
 import UserForm from '../components/UserForm';
 import PickerControls from '../components/PickerControls';
 
-import bggTypes from '../constants/bgg-types';
-
-
-import {
-         receiveGames
-      } from '../actions/mygames';
-
+import bggTypes from '../lib/bgg-types';
 
 const gameType = bggTypes.boardgames;
 
@@ -92,15 +88,16 @@ class Picker extends Component{
 
 
   componentDidMount() {
-    const { dispatch, mygames } = this.props;
-    if(mygames.games && !mygames.games.length && localStorage.games){
-      try{
-        dispatch(receiveGames(JSON.parse(localStorage.games)));
-      }
-      catch(exp){
-        console.log('error with localStorage', exp);
-      }
-    }
+    // const { mygames } = this.props;
+    console.log('picker componentDidMount', this.props);
+    // if(mygames.games && !mygames.games.length && localStorage.games){
+    //   try{
+    //     this.props.getGamesEnd(JSON.parse(localStorage.games)));
+    //   }
+    //   catch(exp){
+    //     console.log('error with localStorage', exp);
+    //   }
+    // }
   }
 
   render(){
@@ -108,7 +105,9 @@ class Picker extends Component{
 
     let filteredGames = mygames.games || [];
 
-    const showForm = !filteredGames.length;
+    console.log('filteredGames', filteredGames);
+
+    // const showForm = !filteredGames.length;
 
     const userForm = !filteredGames.length ? (
       <section>
@@ -126,24 +125,30 @@ class Picker extends Component{
 
     return (
     <div>
-      {pickerControls}
-      {userForm}
-      <section>
-        {filteredGames.map(function(game, i) {
-          return <GameCard game={game} gameType={gameType} key={i}/>;
-        })}
-      </section>
+      <Header/>
+      <main className="mdl-layout__content">
+        <div className="page-content">
+          {pickerControls}
+          {userForm}
+          <section>
+            {filteredGames.map(function(game, i) {
+              return <GameCard game={game} gameType={gameType} key={i}/>;
+            })}
+          </section>
+        </div>
+      </main>
+      <Footer/>
     </div>
     );
   }
 };
 
-Picker.propTypes = {
-  dispatch: PropTypes.func.isRequired
-};
+
 
 function mapStateToProps(state){
   const { picker, mygames } = state;
+
+  console.log('state from picker', state);
 
   return {
     picker,

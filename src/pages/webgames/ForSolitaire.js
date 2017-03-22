@@ -1,9 +1,12 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import _ from 'lodash';
-import * as forSolitaireActions from '../../actions/webgames/forsolitaire';
-import {selectBid, placeBid, selectProp, sellProp, nextSell, startGame} from '../../actions/webgames/forsolitaire';
-import {LinearProgress, RadioButtonGroup, RadioButton, RaisedButton} from 'material-ui';
+import * as forSolitaireActions from '../../state/webgames/forsolitaire';
+import {selectBid, placeBid, selectProp, sellProp, nextSell, startGame} from '../../state/webgames/forsolitaire';
+import {RadioButtonGroup, RadioButton, RaisedButton} from 'material-ui';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
 
 class PropCard extends Component {
@@ -37,36 +40,14 @@ class PropCard extends Component {
 
 class ForSolitaire extends Component {
 
-
-  bidChange(val){
-    const {dispatch} = this.props;
-    dispatch(selectBid(parseInt(val,10)));
-  }
-
   placeBid(){
-    const {dispatch, game} = this.props;
-    dispatch(placeBid(game.selectedBid));
-  }
-
-  selectProp(prop){
-    const {dispatch} = this.props;
-    console.log('selectProp', prop);
-    dispatch(selectProp(prop));
+    const {game} = this.props;
+    this.props.placeBid(game.selectedBid)
   }
 
   sellProp(){
-    const {dispatch, game} = this.props;
-    dispatch(sellProp(game.selectedProp));
-  }
-
-  nextSell(){
-    const {dispatch} = this.props;
-    dispatch(nextSell());
-  }
-
-  startGame(){
-    const {dispatch} = this.props;
-    dispatch(startGame());
+    const {game} = this.props;
+    this.props.sellProp(game.selectedProp);
   }
 
   componentDidUpdate(prevProps, prevState){
@@ -84,11 +65,10 @@ class ForSolitaire extends Component {
 
   render() {
 
-    const { game, dispatch } = this.props;
+    const { game } = this.props;
 
     //debugging
     window.fsa = forSolitaireActions;
-    window.dis = dispatch;
     window.game = game;
 
     console.log('rendering ForSolitaire', game);
@@ -99,7 +79,7 @@ class ForSolitaire extends Component {
     if(game.phase === 'buy'){
       output = (
         <div>
-          <div>
+          <div style={{fontSize: '2em'}}>
             Round: {game.round}
           </div>
           <div>
@@ -110,16 +90,17 @@ class ForSolitaire extends Component {
           </div>
           <div>
           {game.marketProps.map((prop, i) => {
-            return <PropCard value={prop.value} name={prop.name}/>;
+            return <PropCard value={prop.value} name={prop.name} key={"propcard" + i} />;
           })}
           </div>
           <div style={{width:'100%', float: 'left'}}/>
           <div>
-            <RadioButtonGroup name="bids" onChange={(evt, val) => this.bidChange(val)} ref="bidsButtonGroup" >
+            <RadioButtonGroup name="bids" onChange={(evt, val) => this.props.selectBid(parseInt(val,10))} ref="bidsButtonGroup" >
             {game.availableBids.map((bid, i) => {
               return <RadioButton value={'' + bid} key={i} label={'' + bid} style={{float:'left', margin: '5px', width:'auto'}}/>;
             })}
             </RadioButtonGroup>
+            <div style={{width:'100%', float: 'left'}}/>
             <RaisedButton label="Place Bid" primary={true} onClick={evt => this.placeBid()}style={{float:'left', marginLeft: '5px'}} disabled={!game.selectedBid && game.selectedBid !== 0}/>
           </div>
         </div>
@@ -128,44 +109,63 @@ class ForSolitaire extends Component {
     else if(game.phase === 'sell'){
       output = (
         <div>
-          <div>
+          <div style={{fontSize: '2em'}}>
             Round: {game.round}
           </div>
           <div>
           {game.marketChecks.map((check, i) => {
-            return <PropCard value={check.value} name="check $" check={true}/>;
+            return <PropCard value={check.value} name="check $" check={true} key={"check" + i} />;
           })}
           </div>
           <div style={{width:'100%', float: 'left'}}/>
           <div>
             {game.myProps.map((prop, i) => {
-              return <PropCard selected={game.selectedProp === prop.value} value={prop.value} name={prop.name} onClick={evt => this.selectProp(prop.value)} canClick={true}/>;
+              return <PropCard selected={game.selectedProp === prop.value} value={prop.value} name={prop.name} onClick={evt => this.props.selectProp(prop.value)} canClick={true} key={"propcard" + i}/>;
             })}
-            <RaisedButton label="Sell Property" primary={true} onClick={evt => this.sellProp()} style={{float:'left'}} disabled={!game.selectedProp}/>
+            <div style={{width:'100%', float: 'left'}}/>
+            <RaisedButton label="Sell Property" primary={true} onClick={evt => this.sellProp()} style={{float:'left'}} disabled={!game.selectedProp} />
           </div>
         </div>
       );
     }
     else if(game.phase === 'sellResult'){
+      let unsoldProp = <div/>;
+      if(game.jessUnsoldProp){
+        unsoldProp = (
+          <div>
+            <span style={{float:'left'}}>{`Jessica's unsold property:`}</span>
+            <div>
+              <PropCard value={game.jessUnsoldProp.value} name={game.jessUnsoldProp.name}/>
+            </div>
+          </div>
+        );
+      }
       output = (
         <div>
           <div>
             Round: {game.round}
           </div>
+          <div style={{width:'100%', float: 'left'}}/>
           <div>
             <span style={{float:'left'}}>Me:</span>
-            <PropCard value={game.myCheckReward.value} name="check $" check={true}/>
-            <PropCard value={game.mySoldProp.value} name={game.mySoldProp.name}/>
+            <div>
+              <PropCard value={game.myCheckReward.value} name="check $" check={true}/>
+              <PropCard value={game.mySoldProp.value} name={game.mySoldProp.name}/>
+            </div>
           </div>
           <div style={{width:'100%', float: 'left'}}/>
           <div>
             <span style={{float:'left'}}>Jessica:</span>
-            <PropCard value={game.jessCheckReward.value} name="check $" check={true}/>
-            <PropCard value={game.jessSoldProp.value} name={game.jessSoldProp.name}/>
+            <div>
+              <PropCard value={game.jessCheckReward.value} name="check $" check={true}/>
+              <PropCard value={game.jessSoldProp.value} name={game.jessSoldProp.name}/>
+            </div>
           </div>
           <div style={{width:'100%', float: 'left'}}/>
+          {unsoldProp}
+          <div style={{width:'100%', float: 'left'}}/>
           <div>
-            <RaisedButton label="Next Round" primary={true} onClick={evt => this.nextSell()} style={{float:'left'}}/>
+            <RaisedButton label="Next Round" primary={true} onClick={evt => this.props.nextSell()} style={{float:'left'}}/>
           </div>
         </div>
       );
@@ -183,23 +183,25 @@ class ForSolitaire extends Component {
           </div>
           <div style={{width:'100%', float: 'left'}}/>
           <div>
-            <RaisedButton label="New Game" primary={true} onClick={evt => this.startGame()} style={{float:'left'}}/>
+            <RaisedButton label="New Game" primary={true} onClick={evt => this.props.startGame()} style={{float:'left'}}/>
           </div>
         </div>
       );
     }
 
     return (
-      <div style={{margin: '5px'}}>
-        {output}
+      <div>
+        <Header/>
+        <main className="mdl-layout__content" style={{margin: '6px'}}>
+          <div className="page-content">
+            {output}
+          </div>
+        </main>
+        <Footer/>
       </div>
     );
   }
 }
-
-ForSolitaire.propTypes = {
-  dispatch: PropTypes.func.isRequired
-};
 
 
 function mapStateToProps(state) {
@@ -210,4 +212,13 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(ForSolitaire);
+function mapDispatchToProps(dispatch) {
+  const actionCreators = {
+    selectBid, placeBid, selectProp, sellProp, nextSell, startGame
+  };
+
+  return bindActionCreators(actionCreators, dispatch);
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ForSolitaire);

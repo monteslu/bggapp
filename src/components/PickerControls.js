@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-import {Slider, Toggle, LinearProgress, RadioButton, RadioButtonGroup} from 'material-ui';
+import {Slider, Toggle, RadioButton, RadioButtonGroup} from 'material-ui';
+
 
 import { updatePickerFilter,
          UPDATE_MIN_RATING,
@@ -12,7 +15,7 @@ import { updatePickerFilter,
          UPDATE_EXCLUDE_EXPANSIONS,
          UPDATE_ONLY_OWNED,
          UPDATE_SORT_BY
-      } from '../actions/picker';
+      } from '../state/picker';
 
 
 class PickerSlider extends Component {
@@ -37,8 +40,7 @@ class PickerSlider extends Component {
 class PickerControls extends Component {
 
   change(type, val){
-    const { dispatch } = this.props;
-    dispatch(updatePickerFilter(type, val));
+    this.props.updatePickerFilter(type, val);
   }
 
   componentDidUpdate(){
@@ -90,6 +92,7 @@ class PickerControls extends Component {
             <RadioButton value={'playingtime'} label={'playing time'} style={{float:'left', margin: '5px', width:'auto'}}/>
             <RadioButton value={'numplays'} label={'num plays'} style={{float:'left', margin: '5px', width:'auto'}}/>
           </RadioButtonGroup>
+
         </div>
         <br/>
       </section>
@@ -98,5 +101,23 @@ class PickerControls extends Component {
   }
 }
 
-export default PickerControls;
 
+function mapStateToProps(state) {
+  const { mygames, picker } = state;
+
+  return {
+    mygames,
+    picker
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  const actionCreators = {
+    updatePickerFilter
+  };
+
+  return bindActionCreators(actionCreators, dispatch);
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(PickerControls);

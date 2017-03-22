@@ -1,0 +1,23 @@
+{
+  "name": "BGG Picker",
+  "description": "Board Game Geek Game Picker",
+  "version": "0.2.0",
+  "manifest_version": 2,
+  "permissions": [
+    "serial",
+    "unlimitedStorage",
+    "syncFileSystem",
+    "storage"
+  ],
+  "icons": {
+    "96": "launcher-icon-2x.png"
+  },
+  "app": {
+    "background": {
+      "scripts": [
+        "background.js"
+      ]
+    }
+  }
+}
+

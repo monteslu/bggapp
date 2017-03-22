@@ -1,9 +1,12 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { fetchGamesIfNeeded } from '../actions/hotness';
+import { fetchGamesIfNeeded } from '../state/hotness';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 import GameCard from '../components/GameCard';
-import bggTypes from '../constants/bgg-types';
+
+import bggTypes from '../lib/bgg-types';
 import {LinearProgress} from 'material-ui';
 
 class Hotness extends Component {
@@ -33,19 +36,18 @@ class Hotness extends Component {
     }
     return (
       <div>
-        <h3>Hotness:</h3>
-        {output}
+        <Header/>
+        <main className="mdl-layout__content">
+          <div className="page-content">
+          <h3>Hotness:</h3>
+            {output}
+          </div>
+        </main>
+        <Footer/>
       </div>
     );
   }
 }
-
-Hotness.propTypes = {
-  games: PropTypes.array.isRequired,
-  isFetching: PropTypes.bool.isRequired,
-  dispatch: PropTypes.func.isRequired
-};
-
 
 function mapStateToProps(state) {
   const { isFetching, games } = state.hotness;

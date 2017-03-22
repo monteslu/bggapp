@@ -1,4 +1,4 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
 import {Link} from 'react-router';
 
 import cleanupName from '../lib/cleanupName';
@@ -8,9 +8,8 @@ export default class GameCard extends Component {
     const {game} = this.props;
 
     const style = {
-      background: 'url(\"' + game.thumbnail + '\") center / cover'
+      background: `url("${game.thumbnail}") center / cover`
     };
-
 
     const gameLink = '/details/' + game.objectid;
     let gameDisplayName = cleanupName(game.name.$t);
@@ -32,4 +31,3 @@ export default class GameCard extends Component {
     );
   }
 }
-

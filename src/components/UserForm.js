@@ -1,22 +1,22 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
 import {trim} from 'lodash';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import {TextField, RaisedButton, LinearProgress} from 'material-ui';
 
 import { updateUsername,
          loadMyGames
-      } from '../actions/mygames';
+      } from '../state/mygames';
 
 class UserForm extends Component {
 
   handleTextChange(evt){
-    const {dispatch} = this.props;
-    dispatch(updateUsername(evt.target.value));
+    this.props.updateUsername(evt.target.value);
   }
 
   handleClick(evt){
-    const {dispatch} = this.props;
-    dispatch(loadMyGames());
+    this.props.loadMyGames();
   }
 
   render() {
@@ -59,5 +59,19 @@ class UserForm extends Component {
   }
 }
 
-export default UserForm;
+function mapStateToProps(state) {
+  const { mygames } = state;
 
+  return { mygames };
+}
+
+function mapDispatchToProps(dispatch) {
+  const actionCreators = {
+    updateUsername, loadMyGames
+  };
+
+  return bindActionCreators(actionCreators, dispatch);
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserForm);
