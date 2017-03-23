@@ -10,6 +10,8 @@ export const sellProp = makeActionCreator('SELL_PROPERTY', 'forSolitaire');
 export const nextSell = makeActionCreator('NEXT_SELL', 'forSolitaire');
 
 
+console.log('deck', deck);
+
 const allProperties = [
   {value: 1, name: 'cardboard box'},
   {value: 2, name: 'outhouse'},

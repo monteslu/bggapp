@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import UserForm from '../components/UserForm';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Layout from './Layout';
 import Picker from '../components/PickerControls';
 
 
@@ -11,22 +10,16 @@ class Settings extends Component {
     const { mygames, picker } = this.props;
 
     return (
-      <div>
-        <Header/>
-        <main className="mdl-layout__content">
-          <div className="page-content">
-            <h2>Settings:</h2>
-            <section>
-              <UserForm mygames={mygames} />
-            </section>
-            <h3>Picker defaults:</h3>
-            <section>
-              <Picker picker={picker} />
-            </section>
-          </div>
-        </main>
-        <Footer/>
-      </div>
+      <Layout>
+        <h2>Settings:</h2>
+        <section>
+          <UserForm mygames={mygames} />
+        </section>
+        <h3>Picker defaults:</h3>
+        <section>
+          <Picker picker={picker} />
+        </section>
+      </Layout>
     );
   }
 }

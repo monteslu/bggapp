@@ -5,8 +5,7 @@ import _ from 'lodash';
 import * as forSolitaireActions from '../../state/webgames/forsolitaire';
 import {selectBid, placeBid, selectProp, sellProp, nextSell, startGame} from '../../state/webgames/forsolitaire';
 import {RadioButtonGroup, RadioButton, RaisedButton} from 'material-ui';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import Layout from '../Layout';
 
 
 class PropCard extends Component {
@@ -190,15 +189,11 @@ class ForSolitaire extends Component {
     }
 
     return (
-      <div>
-        <Header/>
-        <main className="mdl-layout__content" style={{margin: '6px'}}>
-          <div className="page-content">
-            {output}
-          </div>
-        </main>
-        <Footer/>
-      </div>
+      <Layout>
+        <div style={{margin: '6px'}}>
+          {output}
+        </div>
+      </Layout>
     );
   }
 }

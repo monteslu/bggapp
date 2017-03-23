@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 
 import {filter} from 'lodash';
 
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Layout from './Layout';
+
 import GameCard from '../components/CollectionGameCard';
 import UserForm from '../components/UserForm';
 import PickerControls from '../components/PickerControls';
@@ -124,21 +124,15 @@ class Picker extends Component{
     filteredGames = sort(filteredGames, picker.sortBy);
 
     return (
-    <div>
-      <Header/>
-      <main className="mdl-layout__content">
-        <div className="page-content">
-          {pickerControls}
-          {userForm}
-          <section>
-            {filteredGames.map(function(game, i) {
-              return <GameCard game={game} gameType={gameType} key={i}/>;
-            })}
-          </section>
-        </div>
-      </main>
-      <Footer/>
-    </div>
+    <Layout>
+      {pickerControls}
+      {userForm}
+      <section>
+        {filteredGames.map(function(game, i) {
+          return <GameCard game={game} gameType={gameType} key={i}/>;
+        })}
+      </section>
+    </Layout>
     );
   }
 };

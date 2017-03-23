@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { fetchGamesIfNeeded } from '../state/hotness';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Layout from './Layout';
 import GameCard from '../components/GameCard';
 
 import bggTypes from '../lib/bgg-types';
@@ -18,14 +17,15 @@ class Hotness extends Component {
 
 
   render() {
-    const { games, isFetching } = this.props;
+
+    const { games, gamesPending } = this.props;
     const gameType = bggTypes.boardgames;
-    console.log('hotness render', games, isFetching);
+    console.log('hotness render', games, gamesPending);
     let output = (<h2>Empty.</h2>);
-    if(isFetching && games.length === 0){
+    if(gamesPending && !games){
       output = (<LinearProgress mode="indeterminate"  />);
     }
-    if(!isFetching && games.length > 0){
+    if(!gamesPending && games){
       output = (
         <div>
         {games.map(function(game, i) {
@@ -35,26 +35,20 @@ class Hotness extends Component {
       );
     }
     return (
-      <div>
-        <Header/>
-        <main className="mdl-layout__content">
-          <div className="page-content">
-          <h3>Hotness:</h3>
-            {output}
-          </div>
-        </main>
-        <Footer/>
-      </div>
+      <Layout>
+        <h3>Hotness:</h3>
+        {output}
+      </Layout>
     );
   }
 }
 
 function mapStateToProps(state) {
-  const { isFetching, games } = state.hotness;
+  const { gamesPending, games } = state.hotness;
 
   return {
     games,
-    isFetching
+    gamesPending
   };
 }
 
