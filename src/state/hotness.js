@@ -14,9 +14,12 @@ function fetchGames() {
 }
 
 export function fetchGamesIfNeeded() {
+  console.log('fetchGamesIfNeeded');
   return (dispatch, getState) => {
     const { hotness } = getState();
+    console.log('hotness', hotness);
     if(!hotness.gamesRunning && !hotness.games){
+
       return dispatch(fetchGames());
     }
   };

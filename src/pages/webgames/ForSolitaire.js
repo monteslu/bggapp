@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import _ from 'lodash';
-import * as forSolitaireActions from '../../state/webgames/forsolitaire';
 import {selectBid, placeBid, selectProp, sellProp, nextSell, startGame} from '../../state/webgames/forsolitaire';
-import {RadioButtonGroup, RadioButton, RaisedButton} from 'material-ui';
+import {RadioGroup, Radio, Button, FormControlLabel} from '@material-ui/core';
 import Layout from '../Layout';
 
 
@@ -49,28 +46,14 @@ class ForSolitaire extends Component {
     this.props.sellProp(game.selectedProp);
   }
 
-  componentDidUpdate(prevProps, prevState){
-    const {game} = this.props;
-
-    //HACK for broken RadioButtonGroup
-    if(this.refs.bidsButtonGroup){
-      this.refs.bidsButtonGroup.clearValue();
-      if(game.selectedBid || game.selectedBid === 0){
-        this.refs.bidsButtonGroup.clearValue();
-        this.refs.bidsButtonGroup.setSelectedValue('' + game.selectedBid);
-      }
-    }
-  }
-
   render() {
 
     const { game } = this.props;
 
     //debugging
-    window.fsa = forSolitaireActions;
     window.game = game;
 
-    console.log('rendering ForSolitaire', game);
+    // console.log('rendering ForSolitaire', game);
 
 
     let output = (<h2>{game.phase}</h2>);
@@ -85,7 +68,7 @@ class ForSolitaire extends Component {
             My Coins: {game.myCoins}
           </div>
           <div>
-            Jessica Coins: {game.jessCoins}
+            {`Jessica's Bid: ${game.jessCoins}`}
           </div>
           <div>
           {game.marketProps.map((prop, i) => {
@@ -94,13 +77,14 @@ class ForSolitaire extends Component {
           </div>
           <div style={{width:'100%', float: 'left'}}/>
           <div>
-            <RadioButtonGroup name="bids" onChange={(evt, val) => this.props.selectBid(parseInt(val,10))} ref="bidsButtonGroup" >
+            <RadioGroup name="bids" onChange={(evt, val) => this.props.selectBid(parseInt(val,10))} ref="bidsButtonGroup" value={'' + game.selectedBid}  style={{display: 'block'}}>
             {game.availableBids.map((bid, i) => {
-              return <RadioButton value={'' + bid} key={i} label={'' + bid} style={{float:'left', margin: '5px', width:'auto'}}/>;
+              return <FormControlLabel value={'' + bid} key={i} control={<Radio color="primary" />} label={'' + bid} />; //style={{float:'left', margin: '5px', width:'auto'}}/>;
+              // return <Radio value={'' + bid} key={i} label={'' + bid} style={{float:'left', margin: '5px', width:'auto'}}/>;
             })}
-            </RadioButtonGroup>
+            </RadioGroup>
             <div style={{width:'100%', float: 'left'}}/>
-            <RaisedButton label="Place Bid" primary={true} onClick={evt => this.placeBid()}style={{float:'left', marginLeft: '5px'}} disabled={!game.selectedBid && game.selectedBid !== 0}/>
+            <Button color="primary" variant="contained" onClick={evt => this.placeBid()}style={{float:'left', marginLeft: '5px'}} disabled={!game.selectedBid && game.selectedBid !== 0}>Place Bid</Button>
           </div>
         </div>
       );
@@ -122,7 +106,7 @@ class ForSolitaire extends Component {
               return <PropCard selected={game.selectedProp === prop.value} value={prop.value} name={prop.name} onClick={evt => this.props.selectProp(prop.value)} canClick={true} key={"propcard" + i}/>;
             })}
             <div style={{width:'100%', float: 'left'}}/>
-            <RaisedButton label="Sell Property" primary={true} onClick={evt => this.sellProp()} style={{float:'left'}} disabled={!game.selectedProp} />
+            <Button color="primary" variant="contained" onClick={evt => this.sellProp()} style={{float:'left'}} disabled={!game.selectedProp} >Sell Property</Button>
           </div>
         </div>
       );
@@ -164,7 +148,13 @@ class ForSolitaire extends Component {
           {unsoldProp}
           <div style={{width:'100%', float: 'left'}}/>
           <div>
-            <RaisedButton label="Next Round" primary={true} onClick={evt => this.props.nextSell()} style={{float:'left'}}/>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={evt => this.props.nextSell()} style={{float:'left'}}
+            >
+              Next Round
+            </Button>
           </div>
         </div>
       );
@@ -182,7 +172,7 @@ class ForSolitaire extends Component {
           </div>
           <div style={{width:'100%', float: 'left'}}/>
           <div>
-            <RaisedButton label="New Game" primary={true} onClick={evt => this.props.startGame()} style={{float:'left'}}/>
+            <Button color="primary" variant="contained" onClick={evt => this.props.startGame()} style={{float:'left'}}>New Game</Button>
           </div>
         </div>
       );
@@ -207,13 +197,5 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  const actionCreators = {
-    selectBid, placeBid, selectProp, sellProp, nextSell, startGame
-  };
 
-  return bindActionCreators(actionCreators, dispatch);
-}
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(ForSolitaire);
+export default connect(mapStateToProps, {selectBid, placeBid, selectProp, sellProp, nextSell, startGame})(ForSolitaire);

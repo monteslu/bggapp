@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 import { fetchGamesIfNeeded } from '../state/hotness';
 import Layout from './Layout';
 import GameCard from '../components/GameCard';
 
 import bggTypes from '../lib/bgg-types';
-import {LinearProgress} from 'material-ui';
+import {LinearProgress} from '@material-ui/core';
 
 class Hotness extends Component {
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(fetchGamesIfNeeded());
+    this.props.fetchGamesIfNeeded();
   }
-
 
   render() {
 
@@ -52,4 +49,5 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Hotness);
+
+export default connect(mapStateToProps, {fetchGamesIfNeeded})(Hotness);

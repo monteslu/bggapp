@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import {trim} from 'lodash';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import {TextField, RaisedButton, LinearProgress} from 'material-ui';
+import {TextField, Button, LinearProgress} from '@material-ui/core';
+
+//console.log('Userform tf', TextField, 'rb', Button, 'lp', LinearProgress);
 
 import { updateUsername,
          loadMyGames
@@ -44,13 +45,19 @@ class UserForm extends Component {
       <div className="mdl-shadow--8dp" style={style}>
         <div style={style}>
         <TextField
-        floatingLabelText="BGG username"
+        placeholder="BGG username"
         value={mygames.username || ''}
         onChange={evt => this.handleTextChange(evt)}
-        underlineStyle={{borderColor:'red', color: 'red'}}
-        floatingLabelStyle={{color: 'red'}}
         />
-        <RaisedButton label={buttonLabel} primary={true} disabled={!trim(mygames.username) || mygames.isFetching} onClick={evt => this.handleClick(evt)}/><br/>
+        <Button
+          variant={'contained'}
+          color={'primary'}
+          disabled={!trim(mygames.username) || mygames.isFetching}
+          onClick={evt => this.handleClick(evt)}
+        >
+          {buttonLabel}
+        </Button>
+        <br/>
         {progress}{queued}{errorFetching}
         </div>
       </div>
@@ -65,13 +72,4 @@ function mapStateToProps(state) {
   return { mygames };
 }
 
-function mapDispatchToProps(dispatch) {
-  const actionCreators = {
-    updateUsername, loadMyGames
-  };
-
-  return bindActionCreators(actionCreators, dispatch);
-}
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserForm);
+export default connect(mapStateToProps, { updateUsername, loadMyGames })(UserForm);
